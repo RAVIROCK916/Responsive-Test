@@ -1,13 +1,11 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import Stopwatch from "./components/StopWatch";
-
-import Switches from "./sections/Switches";
 
 function App() {
 	return (
-		<main>
-			<Stopwatch />
-			<Switches />
+		<main className="space-y-20">
+			<h1 className="text-5xl">Responsive Test</h1>
+			<Outlet />
 		</main>
 	);
 }
