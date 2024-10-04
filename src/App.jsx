@@ -2,10 +2,12 @@ import { Outlet } from "react-router-dom";
 import "./App.css";
 
 function App() {
+	console.log("App");
+
 	return (
 		<main className="space-y-20">
-			<h1 className="text-5xl">Responsive Test</h1>
 			<Outlet />
+			<p>This is the App component.</p>
 		</main>
 	);
 }

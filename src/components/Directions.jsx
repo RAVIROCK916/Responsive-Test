@@ -1,56 +1,65 @@
-import { useState, useEffect, useCallback } from "react";
 import {
-	MoveUpIcon,
+	MoveUp,
 	MoveUpLeft,
 	MoveUpRight,
-	MoveLeftIcon,
-	MoveRightIcon,
-	MoveDownIcon,
+	MoveLeft,
+	MoveRight,
+	MoveDown,
 	MoveDownLeft,
 	MoveDownRight,
 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-const Directions = ({ onStart, onCorrect }) => {
-	const directions = [
-		{ icon: MoveUpLeft, key: " ", position: "top-left" },
-		{ icon: MoveUpIcon, key: "ArrowUp", position: "top-center" },
-		{ icon: MoveUpRight, key: " ", position: "top-right" },
-		{ icon: MoveLeftIcon, key: "ArrowLeft", position: "middle-left" },
-		{ icon: MoveRightIcon, key: "ArrowRight", position: "middle-right" },
-		{ icon: MoveDownLeft, key: " ", position: "bottom-left" },
-		{ icon: MoveDownIcon, key: "ArrowDown", position: "bottom-center" },
-		{ icon: MoveDownRight, key: " ", position: "bottom-right" },
+const Directions = ({ onStart, onEnd, currentRound }) => {
+	const gameTime = 500;
+	const totalRounds = 2;
+
+	const topDirections = [
+		{ id: 0, icon: MoveUpLeft, key: " " },
+		{ id: 1, icon: MoveUp, key: "ArrowUp" },
+		{ id: 2, icon: MoveUpRight, key: " " },
 	];
+	const centerDirections = [
+		{ id: 3, icon: MoveLeft, key: "ArrowLeft" },
+		{ id: 4, icon: MoveRight, key: "ArrowRight" },
+	];
+	const bottomDirections = [
+		{ id: 5, icon: MoveDownLeft, key: " " },
+		{ id: 6, icon: MoveDown, key: "ArrowDown" },
+		{ id: 7, icon: MoveDownRight, key: " " },
+	];
+
+	const directions = [topDirections, centerDirections, bottomDirections];
+
+	const flatDirections = directions.flat();
 
 	const [activeDirection, setActiveDirection] = useState(null);
 	const [isLit, setIsLit] = useState(false);
-	const [isTimerRunning, setIsTimerRunning] = useState(false);
 
 	const startGame = useCallback(() => {
-		const randomIndex = Math.floor(Math.random() * directions.length);
+		const randomIndex = Math.floor(Math.random() * flatDirections.length);
 		setActiveDirection(randomIndex);
 		setIsLit(true);
-		setIsTimerRunning(false);
 
 		setTimeout(() => {
 			setIsLit(false);
-			setIsTimerRunning(true);
 			onStart();
-		}, 5000);
-	}, [onStart]);
+		}, gameTime);
+	}, [onStart, currentRound]);
 
 	useEffect(() => {
 		startGame();
-	}, [startGame]);
+	}, []);
 
 	useEffect(() => {
 		const handleKeyPress = (event) => {
-			if (activeDirection !== null && isTimerRunning) {
-				if (event.key === directions[activeDirection].key) {
-					onCorrect();
+			if (activeDirection !== null && !isLit) {
+				if (event.key === flatDirections[activeDirection].key) {
+					onEnd(setIsLit);
 					setActiveDirection(null);
-					setIsTimerRunning(false);
-					setTimeout(startGame, 2000);
+					if (currentRound < totalRounds) {
+						setTimeout(startGame, 0);
+					}
 				}
 			}
 		};
@@ -59,48 +68,26 @@ const Directions = ({ onStart, onCorrect }) => {
 		return () => {
 			window.removeEventListener("keydown", handleKeyPress);
 		};
-	}, [activeDirection, isTimerRunning, onCorrect, startGame]);
+	}, [activeDirection, isLit, startGame, onEnd]);
 
 	return (
-		<div className="relative w-80 h-80 mx-auto">
-			{directions.map(({ icon: Direction, position }, index) => (
-				<div
-					key={Direction.displayName}
-					className={`absolute ${getPositionClass(position)}`}
-				>
-					<Direction
-						className={`w-16 h-16 ${
-							activeDirection === index && isLit
-								? "text-red-500"
-								: "text-neutral-600"
-						}`}
-					/>
+		<div className="max-w-fit mx-auto">
+			{directions.map((direction, index) => (
+				<div key={index} className="flex justify-between">
+					{direction.map((Direction, index) => (
+						<Direction.icon
+							key={index}
+							className={`w-40 h-40 ${
+								activeDirection === Direction.id && isLit
+									? "text-neutral-50"
+									: "text-neutral-800"
+							}`}
+							strokeWidth={1}
+						/>
+					))}
 				</div>
 			))}
 		</div>
 	);
 };
-
-function getPositionClass(position) {
-	switch (position) {
-		case "top-left":
-			return "top-0 left-0";
-		case "top-center":
-			return "top-0 left-1/2 transform -translate-x-1/2";
-		case "top-right":
-			return "top-0 right-0";
-		case "middle-left":
-			return "top-1/2 left-0 transform -translate-y-1/2";
-		case "middle-right":
-			return "top-1/2 right-0 transform -translate-y-1/2";
-		case "bottom-left":
-			return "bottom-0 left-0";
-		case "bottom-center":
-			return "bottom-0 left-1/2 transform -translate-x-1/2";
-		case "bottom-right":
-			return "bottom-0 right-0";
-		default:
-			return "";
-	}
-}
 export default Directions;

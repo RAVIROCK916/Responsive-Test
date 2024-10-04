@@ -4,25 +4,32 @@ import App from "./App.jsx";
 import "./index.css";
 
 import {
-	createBrowserRouter as Router,
+	BrowserRouter as Router,
 	RouterProvider,
 	Route,
-	createRoutesFromElements,
+	Routes,
 } from "react-router-dom";
 import Start from "./pages/Start.jsx";
 import Play from "./pages/Play.jsx";
 
-const router = Router(
-	createRoutesFromElements(
-		<Route path="/" element={<App />}>
-			<Route index element={<Start />} />
-			<Route path="/play" element={<Play />} />
-		</Route>
-	)
-);
+// const router = Router(
+// 	createRoutesFromElements(
+// 		<Route path="/" element={<App />}>
+// 			<Route index element={<Start />} />
+// 			<Route path="/play" element={<Play />} />
+// 		</Route>
+// 	)
+// );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<Router>
+			<Routes>
+				<Route path="/" element={<App />}>
+					<Route index element={<Start />} />
+					<Route path="play" element={<Play />} />
+				</Route>
+			</Routes>
+		</Router>
 	</React.StrictMode>
 );
