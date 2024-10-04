@@ -10,10 +10,9 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
-const Directions = ({ onStart, onEnd, currentRound }) => {
-	const gameTime = 500;
-	const totalRounds = 2;
+import { gameTime, totalRounds } from "../constants";
 
+const Directions = ({ onStart, onEnd, currentRound }) => {
 	const topDirections = [
 		{ id: 0, icon: MoveUpLeft, key: " " },
 		{ id: 1, icon: MoveUp, key: "ArrowUp" },
