@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 		<Router>
 			<Routes>
 				<Route path="/" element={<Start />} />
-				<Route path="play" element={<Play />} />
+				<Route path="/play" element={<Play />} />
 			</Routes>
 		</Router>
 	</React.StrictMode>
