@@ -36,14 +36,16 @@ const Directions = ({ onStart, onEnd, currentRound }) => {
 	const [isLit, setIsLit] = useState(false);
 
 	const startGame = useCallback(() => {
-		const randomIndex = Math.floor(Math.random() * flatDirections.length);
+		let randomIndex = Math.floor(Math.random() * flatDirections.length);
+
+		while (activeDirection === randomIndex) {
+			randomIndex = Math.floor(Math.random() * flatDirections.length);
+		}
+
 		setActiveDirection(randomIndex);
 		setIsLit(true);
 
-		setTimeout(() => {
-			setIsLit(false);
-			onStart();
-		}, gameTime);
+		onStart();
 	}, [onStart, currentRound]);
 
 	useEffect(() => {
@@ -51,10 +53,18 @@ const Directions = ({ onStart, onEnd, currentRound }) => {
 	}, []);
 
 	useEffect(() => {
+		if (currentRound === 1) {
+			setActiveDirection(null);
+			setIsLit(false);
+			startGame();
+		}
+	}, [currentRound]);
+
+	useEffect(() => {
 		const handleKeyPress = (event) => {
-			if (activeDirection !== null && !isLit) {
+			if (activeDirection !== null) {
 				if (event.key === flatDirections[activeDirection].key) {
-					onEnd(setIsLit);
+					onEnd();
 					setActiveDirection(null);
 					if (currentRound < totalRounds) {
 						setTimeout(startGame, 0);

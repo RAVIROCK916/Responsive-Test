@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import formatTime from "../utils/formatTime";
 
 const StopWatch = ({ isRunning, onStop }) => {
 	const [time, setTime] = useState(0);
@@ -16,14 +17,6 @@ const StopWatch = ({ isRunning, onStop }) => {
 		}
 		return () => clearInterval(interval);
 	}, [isRunning, onStop, time]);
-
-	const formatTime = (ms) => {
-		const seconds = Math.floor(ms / 1000);
-		const milliseconds = Math.floor((ms % 1000) / 10);
-		return `${seconds.toString().padStart(2, "0")}.${milliseconds
-			.toString()
-			.padStart(2, "0")}`;
-	};
 
 	return <div className="text-4xl">{formatTime(time)}</div>;
 };
