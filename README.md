@@ -1,8 +1,38 @@
-# React + Vite
+# Responsive Test App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and efficient tool to test website responsiveness across different device viewports.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Test websites across multiple device dimensions
+- Real-time viewport size display
+- Common device presets
+- Custom viewport size input
+- Responsive iframe preview
+- Clean and intuitive interface
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/responsive-test.git
+```
+
+```bash
+cd responsive-test
+npm install
+```
+
+Usage
+Start the development serve
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.

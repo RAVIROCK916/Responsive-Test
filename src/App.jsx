@@ -5,8 +5,6 @@ import Start from "./pages/Start.jsx";
 import Play from "./pages/Play.jsx";
 
 function App() {
-	console.log("App");
-
 	return (
 		<main className="space-y-20">
 			<Router>
